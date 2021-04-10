@@ -1,4 +1,6 @@
 let http = require("http");
+let { getUsers, addUsers} = require("./repository");
+
 
 let cors = (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
@@ -13,6 +15,8 @@ let cors = (req, res) => {
 	return false;
 };
 
+
+
 let server = http.createServer((req, res) => {
 	if (cors(req, res)) return;
 	switch (req.url) {
@@ -21,7 +25,12 @@ let server = http.createServer((req, res) => {
 			res.write("Home Page");
 			break;
 		case "/users":
-			res.write(`[{ "id": 1, "name": "Vitaliy"}, {"id": 2, "name": "Alex" }]`);
+			if (req.method === "POST") {
+                addUsers('Dasha')
+				res.write(JSON.stringify({success: true}));
+			} else {
+				res.write(JSON.stringify(getUsers()));
+			}
 			break;
 		default:
 			res.write("404");
@@ -30,3 +39,5 @@ let server = http.createServer((req, res) => {
 	res.end();
 });
 server.listen(4000);
+
+// nodemon save!!!
