@@ -1,25 +1,27 @@
 const fs = require("fs");
 
-
-
 const getUsers = () => {
-	// fs.readFile("users.json", function (err, buf) {
-  //   debugger
-	// 	callback(buf.toString());
-	// });
-
-	// console.log("after calling readFile");
-
 	return new Promise((resolve, reject) => {
 		fs.readFile("users.json", function (err, buf) {
-			resolve(buf.toString());
+			if (err) {
+				reject(err);
+			} else {
+				resolve(JSON.parse(buf.toString()));
+			}
 		});
 	});
-
 };
 
-const addUsers = (name) => {
-	return users.push({ name: name });
+const addUsers = async (name) => {
+	let users = await getUsers();
+	users.push({ name: name });
+
+	return new Promise((resolve, reject) => {
+		fs.writeFile("users.json", JSON.stringify(users), (err) => {
+			if (err) reject(err);
+			resolve();
+		});
+	});
 };
 
 exports.getUsers = getUsers;
