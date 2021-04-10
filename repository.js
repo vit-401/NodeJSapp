@@ -2,13 +2,20 @@ const fs = require("fs");
 
 
 
-const getUsers = (callback) => {
-	fs.readFile("users.json", function (err, buf) {
-    debugger
-		callback(buf.toString());
+const getUsers = () => {
+	// fs.readFile("users.json", function (err, buf) {
+  //   debugger
+	// 	callback(buf.toString());
+	// });
+
+	// console.log("after calling readFile");
+
+	return new Promise((resolve, reject) => {
+		fs.readFile("users.json", function (err, buf) {
+			resolve(buf.toString());
+		});
 	});
 
-	console.log("after calling readFile");
 };
 
 const addUsers = (name) => {
