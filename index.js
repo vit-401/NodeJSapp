@@ -1,5 +1,6 @@
 let http = require("http");
-let server = http.createServer((req, res) => {
+
+let cors = (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Access-Control-Request-Method", "*");
 	res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
@@ -7,8 +8,13 @@ let server = http.createServer((req, res) => {
 	if (req.method === "OPTIONS") {
 		res.writeHead(200);
 		res.end();
-		return;
+		return true;
 	}
+	return false;
+};
+
+let server = http.createServer((req, res) => {
+	if (cors(req, res)) return;
 	switch (req.url) {
 		case "/":
 			debugger;
