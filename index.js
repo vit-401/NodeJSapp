@@ -1,6 +1,5 @@
 let http = require("http");
-let { getUsers, addUsers} = require("./repository");
-
+let { usersControler } = require("./usersControler");
 
 let cors = (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
@@ -15,8 +14,6 @@ let cors = (req, res) => {
 	return false;
 };
 
-
-
 let server = http.createServer((req, res) => {
 	if (cors(req, res)) return;
 	switch (req.url) {
@@ -25,18 +22,13 @@ let server = http.createServer((req, res) => {
 			res.write("Home Page");
 			break;
 		case "/users":
-			if (req.method === "POST") {
-                addUsers('Dasha')
-				res.write(JSON.stringify({success: true}));
-			} else {
-				res.write(JSON.stringify(getUsers()));
-			}
+			usersControler(req, res);
+
 			break;
 		default:
 			res.write("404");
 			break;
 	}
-	res.end();
 });
 server.listen(4000);
 
